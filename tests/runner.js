@@ -5,6 +5,8 @@ var tests = [
   'tests/app/objects',
   'tests/app/functions',
   'tests/app/async',
+  'tests/app/flowControl',
+  'tests/app/modules',
   'tests/app/views'
 ];
 

@@ -18,6 +18,8 @@ define([ 'use!backbone', 'use!underscore', 'jquery' ], function(Backbone, _, $) 
         template : tpl,
         render : function() {
           // write code here to make the tests below pass
+          $(this.el).html(_.template(this.template)(this.model.toJSON()));
+          return this;
         }
       });
 
@@ -25,8 +27,8 @@ define([ 'use!backbone', 'use!underscore', 'jquery' ], function(Backbone, _, $) 
         model : model
       }).render();
 
-      expect(document.getElementById('my-view')).to.be.ok();
-      expect(document.getElementById('my-view').innerHTML).to.contain('Hello, world');
+      expect(view.el.innerHTML).to.be.ok();
+      expect(view.el.innerHTML).to.contain('Hello, world');
     });
 
     it("you should be able to update the view when the model changes", function() {
@@ -34,11 +36,13 @@ define([ 'use!backbone', 'use!underscore', 'jquery' ], function(Backbone, _, $) 
         // fill in the code required in the initialize and render methods
         // to make the tests below pass
         initialize : function() {
-
+          this.template = _.template(this.template);
+          this.model.bind('change', this.render, this);
         },
         template : tpl,
         render : function() {
-
+          $(this.el).html(this.template(this.model.toJSON()));
+          return this;
         }
       });
 
@@ -48,8 +52,8 @@ define([ 'use!backbone', 'use!underscore', 'jquery' ], function(Backbone, _, $) 
 
       model.set('greeting', 'Goodbye, world');
 
-      expect(document.getElementById('my-view').innerHTML).to.contain('Goodbye, world');
-      expect(document.getElementById('my-view').innerHTML).not.to.contain('Hello, world');
+      expect(view.el.innerHTML).to.contain('Goodbye, world');
+      expect(view.el.innerHTML).not.to.contain('Hello, world');
     });
 
   });
